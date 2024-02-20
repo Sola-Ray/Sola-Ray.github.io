@@ -13,7 +13,7 @@
     localStorage.setItem('spotify_code', code);
 
     // Rediriger vers une page de ton choix dans ton extension Chrome
-    //window.location.href = 'chrome-extension://heeopgfdhloccgpgcdeegeikkoamafpb/callback.html';
+    chrome.tabs.create({ url: 'chrome://newTab' });
 </script>
 </body>
 </html>
