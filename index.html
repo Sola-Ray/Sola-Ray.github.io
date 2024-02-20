@@ -1,1 +1,19 @@
-TEST
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Spotify Authorization Redirect</title>
+</head>
+<body>
+<script>
+    // Récupérer le code d'autorisation de l'URL de redirection
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+
+    // Stocker le code d'autorisation dans le localStorage
+    localStorage.setItem('spotify_code', code);
+
+    // Rediriger vers une page de ton choix dans ton extension Chrome
+    window.location.href = 'chrome-extension://heeopgfdhloccgpgcdeegeikkoamafpb/callback.html';
+</script>
+</body>
+</html>
