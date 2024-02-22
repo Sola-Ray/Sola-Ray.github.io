@@ -20,8 +20,10 @@
         window.onload = () => {
             const accessToken = extractAccessToken();
             if (accessToken) {
-                // Transmettre le jeton d'accès à l'extension Chrome
-                window.postMessage({ token: accessToken }, '*');
+                // Stocker le jeton d'accès dans le stockage local de Chrome
+                chrome.storage.local.set({ token: accessToken }, () => {
+                    console.log('Access token stored in Chrome storage.');
+                });
             } else {
                 console.error('Access token not found in URL.');
             }
