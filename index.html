@@ -8,26 +8,5 @@
 <body>
     <h1>Spotify Authentication</h1>
     <p>Veuillez patienter pendant que nous traitons votre authentification Spotify...</p>
-
-    <script>
-        // Fonction pour extraire le jeton d'accès de l'URL de redirection
-        function extractAccessToken() {
-            const urlParams = new URLSearchParams(window.location.hash.substring(1));
-            return urlParams.get('access_token');
-        }
-
-        // Appeler la fonction pour extraire le jeton d'accès une fois que la page est chargée
-        window.onload = () => {
-            const accessToken = extractAccessToken();
-            if (accessToken) {
-                // Stocker le jeton d'accès dans le stockage local de Chrome
-                chrome.storage.local.set({ token: accessToken }, () => {
-                    console.log('Access token stored in Chrome storage.');
-                });
-            } else {
-                console.error('Access token not found in URL.');
-            }
-        };
-    </script>
 </body>
 </html>
