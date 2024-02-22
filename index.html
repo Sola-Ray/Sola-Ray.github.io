@@ -1,9 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Spotify Authorization Redirect</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Authentication</title>
 </head>
 <body>
-    <script src="index.js"></script>
+    <h1>Spotify Authentication</h1>
+    <p>Veuillez patienter pendant que nous traitons votre authentification Spotify...</p>
+
+    <script>
+        // Fonction pour extraire le jeton d'accès de l'URL de redirection
+        function extractAccessToken() {
+            const urlParams = new URLSearchParams(window.location.hash.substring(1));
+            return urlParams.get('access_token');
+        }
+
+        // Appeler la fonction pour extraire le jeton d'accès une fois que la page est chargée
+        window.onload = () => {
+            const accessToken = extractAccessToken();
+            if (accessToken) {
+                // Transmettre le jeton d'accès à l'extension Chrome
+                chrome.runtime.sendMessage({ token: accessToken }, response => {
+                    if (response && response.success) {
+                        console.log('Token transmitted successfully to Chrome extension.');
+                    } else {
+                        console.error('Failed to transmit token to Chrome extension.');
+                    }
+                });
+            } else {
+                console.error('Access token not found in URL.');
+            }
+        };
+    </script>
 </body>
 </html>
