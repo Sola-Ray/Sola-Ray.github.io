@@ -21,13 +21,7 @@
             const accessToken = extractAccessToken();
             if (accessToken) {
                 // Transmettre le jeton d'accès à l'extension Chrome
-                chrome.runtime.sendMessage({ token: accessToken }, response => {
-                    if (response && response.success) {
-                        console.log('Token transmitted successfully to Chrome extension.');
-                    } else {
-                        console.error('Failed to transmit token to Chrome extension.');
-                    }
-                });
+                window.postMessage({ token: accessToken }, '*');
             } else {
                 console.error('Access token not found in URL.');
             }
