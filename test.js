@@ -1,32 +1,12 @@
-async function storeSpotifyCodeInIndexedDB(code) {
-    return new Promise(function(resolve, reject) {
-        var request = indexedDB.open('spotify_database', 1);
-        var db;
-
-        request.onerror = function(event) {
-            reject("Error opening IndexedDB database");
-        };
-
-        request.onsuccess = function(event) {
-            db = event.target.result;
-            var transaction = db.transaction(['spotify_data'], 'readwrite');
-            var objectStore = transaction.objectStore('spotify_data');
-            var putRequest = objectStore.put({ id: 1, spotify_code: code });
-
-            putRequest.onsuccess = function(event) {
-                resolve("Spotify code stored in IndexedDB successfully");
-            };
-
-            putRequest.onerror = function(event) {
-                reject("Error while storing spotify_code in IndexedDB");
-            };
-        };
-
-        request.onupgradeneeded = function(event) {
-            var db = event.target.result;
-            var objectStore = db.createObjectStore('spotify_data', { keyPath: 'id' });
-            objectStore.createIndex('spotify_code', 'spotify_code', { unique: false });
-        };
+async function storeSpotifyCodeInChromeStorage(code) {
+    return new Promise((resolve, reject) => {
+        chrome.storage.local.set({ 'spotify_code': code }, () => {
+            if (chrome.runtime.lastError) {
+                reject("Error while storing spotify_code in Chrome storage");
+            } else {
+                resolve("Spotify code stored in Chrome storage successfully");
+            }
+        });
     });
 }
 
@@ -37,7 +17,7 @@ async function main() {
     console.log("Code récupéré depuis l'URL :", code);
 
     try {
-        const result = await storeSpotifyCodeInIndexedDB(code);
+        const result = await storeSpotifyCodeInChromeStorage(code);
         console.log(result);
     } catch (error) {
         console.error(error);
